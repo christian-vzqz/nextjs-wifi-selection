@@ -1,10 +1,14 @@
 # nextjs-wifi-selection
 Simple nextjs wifi management connections
 
-## Install dependencies
+## Getting Started
 
-`npm install`
+First install dependencies ussing `yarn` or `npm install`, run the development server:
 
-## Run local
+```bash
+npm run dev
+# or
+yarn dev
+```
 
-`npm run dev`
+Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
