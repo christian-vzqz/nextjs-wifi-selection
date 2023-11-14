@@ -8,6 +8,10 @@
     "start": "next start",
     "lint": "next lint"
   },
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/christian-vzqz/nextjs-wifi-selection.git"
+  },
   "dependencies": {
     "next": "14.0.1",
     "node-wifi": "^2.0.16",
