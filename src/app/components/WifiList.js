@@ -30,7 +30,6 @@ export default function WifiList() {
       setErrorMessage("Error trying to disconnect, please try again");
     } else {
       setErrorMessage("");
-
       if (!autoDisconnect) {
         getNetworkList();
       }
@@ -52,8 +51,6 @@ export default function WifiList() {
     );
     if (hasAnyConnected) {
       const disconnected = await disconnect(true);
-      console.log({ disconnected });
-
       if (!disconnected.success) {
         setErrorMessage("Error trying to disconnect, please try again");
         return;
@@ -142,7 +139,7 @@ export default function WifiList() {
                   <button
                     type="button"
                     className="inline-flex items-center rounded-md bg-white px-3 py-2 text-sm font-semibold text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 hover:bg-gray-50"
-                    onClick={disconnect}
+                    onClick={(_) => disconnect(false)}
                   >
                     Disconnect
                   </button>
