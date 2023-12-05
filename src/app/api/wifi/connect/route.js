@@ -8,19 +8,8 @@ export async function POST(req) {
       iface: null,
     });
 
-    const connected = await new Promise((resolve) => {
-      wifi.connect({ ssid, password }, (error) => {
-        if (error) {
-          console.error(error);
-          return resolve({ success: false });
-        }
-
-        resolve({ success: true });
-      });
-    });
-
-    const statusCode = connected.success ? 201 : 500;
-    return NextResponse.json(connected, { status: statusCode });
+    await wifi.connect({ ssid, password });
+    return NextResponse.json({ success: true }, { status: 201 });
   } catch (error) {
     console.error(error);
     return NextResponse.json({ message: error.message }, { status: 500 });
