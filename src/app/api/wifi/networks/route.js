@@ -6,40 +6,40 @@ export async function GET(req) {
     iface: null,
   });
 
-  const networkList = await new Promise((resolve) => {
-    wifi.scan((error, networks) => {
-      if (error) {
-        console.log(error);
-      } else {
-        wifi.getCurrentConnections((error, currentConnections) => {
-          if (error) {
-            console.log(error);
-          } else {
-            const mappedNetworks = [];
+  const networks = await wifi.scan();
+  const currentConnections = await wifi.getCurrentConnections();
 
-            networks.map((network) => {
-              if (!network.ssid) {
-                return;
-              }
+  const mappedNetworks = [];
 
-              const connectedNetwork = currentConnections.find(
-                (f) =>
-                  f.ssid === network.ssid ||
-                  f.bssid === network.ssid ||
-                  f.mac === network.ssid
-              );
+  networks.map((network) => {
+    if (!network.ssid) {
+      return;
+    }
 
-              mappedNetworks.push({
-                ssid: network.ssid,
-                connected: connectedNetwork !== undefined,
-              });
-            });
-            resolve(mappedNetworks);
-          }
-        });
-      }
-    });
+    const connectedNetwork = currentConnections.find(
+      (f) =>
+        f.ssid === network.ssid ||
+        f.bssid === network.ssid ||
+        f.mac === network.ssid
+    );
+
+    const isDuplicated = mappedNetworks.find(
+      (mapped) => mapped.ssid === network.ssid
+    );
+
+    if (!isDuplicated) {
+      mappedNetworks.push({
+        ssid: network.ssid,
+        connected: connectedNetwork !== undefined,
+      });
+    }
   });
 
-  return NextResponse.json(networkList, { status: 200 });
+  mappedNetworks.sort((a, b) => {
+    if (a.connected !== b.connected) {
+      return a.connected ? -1 : 1;
+    }
+  });
+
+  return NextResponse.json(mappedNetworks, { status: 200 });
 }
