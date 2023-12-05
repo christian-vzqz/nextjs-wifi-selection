@@ -12,18 +12,8 @@ export async function POST() {
       iface: null,
     });
 
-    const disconnected = await new Promise((resolve) => {
-      wifi.disconnect((error) => {
-        if (error) {
-          console.error(error);
-          return resolve({ success: false });
-        }
-        resolve({ success: true });
-      });
-    });
-
-    const statusCode = disconnected.success ? 201 : 500;
-    return NextResponse.json(disconnected, { status: statusCode });
+    await wifi.disconnect();
+    return NextResponse.json({ success: true }, { status: 201 });
   } catch (error) {
     console.error(error);
     return NextResponse.json({ message: error.message }, { status: 500 });
